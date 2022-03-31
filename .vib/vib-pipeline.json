@@ -24,8 +24,10 @@
         {
           "action_id": "trivy",
           "params": {
-            "threshold": "CRITICAL",
-            "vuln_type": ["OS"]
+            "config": {
+              "threshold": "CRITICAL",
+              "vuln_type": ["OS"]
+            }
           }
         }
       ]
