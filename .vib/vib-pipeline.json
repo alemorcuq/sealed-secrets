@@ -12,7 +12,7 @@
           "action_id": "helm-package"
         },
         {
-          "action_id": "linter-packaging",
+          "action_id": "helm-lint",
           "params": {
             "kind": "HELM"
           }
