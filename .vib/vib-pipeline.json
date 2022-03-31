@@ -3,7 +3,7 @@
     "package": {
       "context": {
         "resources": {
-          "url": "https://github.com/bitnami-labs/sealed-secrets/archive/refs/heads/main.zip",
+          "url": "{SHA_ARCHIVE}",
           "path": "/helm/sealed-secrets"
         }
       },
