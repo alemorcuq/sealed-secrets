@@ -94,6 +94,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          file: ./docker/controller.Dockerfile
           platforms: linux/amd64,linux/arm64,linux/arm
           push: true
           tags: ${{ steps.meta_controller.outputs.tags }}
@@ -109,6 +110,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          file: ./docker/kubeseal.Dockerfile
           platforms: linux/amd64,linux/arm64,linux/arm
           push: true
           tags: ${{ steps.meta_kubeseal.outputs.tags }}
