@@ -62,7 +62,7 @@ controller: $(GO_FILES)
 	$(GO) build -o $@ $(GO_FLAGS) -ldflags "$(GO_LD_FLAGS)" ./cmd/controller
 
 kubeseal: $(GO_FILES)
-	$(GO) build -o $@ $(GO_FLAGS) -ldflags "$(GO_LD_FLAGS)" ./cmd/kubeseal
+	$(GO) build -o $@ $(GO_FLAGS) -ldflags "$(GO_LD_FLAGS)" ./cmd/kseal
 
 define binary
 $(1)-static-$(2)-$(3): $(GO_FILES)
