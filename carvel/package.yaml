@@ -1,7 +1,7 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: "sealedsecrets.bitnami.com.2.7.5"
+  name: "sealedsecrets.bitnami.com.2.7.6"
 spec:
   refName: "sealedsecrets.bitnami.com"
   version: "2.7.6"
@@ -420,7 +420,7 @@ spec:
     spec:
       fetch:
         - imgpkgBundle:
-            image: ghcr.io/alemorcuq/sealed-secrets-carvel:2.7.5
+            image: ghcr.io/alemorcuq/sealed-secrets-carvel:2.7.6
       template:
         - helmTemplate:
             path: sealed-secrets
