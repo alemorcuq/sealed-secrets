@@ -36,7 +36,7 @@ jobs:
       - name: Install yq
         run: |
           mkdir -p ~/bin
-          wget https://github.com/mikefarah/yq/releases/v4.30.8/download/yq_linux_amd64 -O ~/bin/yq
+          wget https://github.com/mikefarah/yq/releases/download/v4.30.8/yq_linux_amd64 -O ~/bin/yq
           chmod +x ~/bin/yq
 
       - name: Get Carvel bundle version
