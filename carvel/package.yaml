@@ -12,7 +12,7 @@ spec:
       properties:
         kubeVersion:
           type: string
-          description: Override Kubernetes version
+          description: Override Kubernetes versions
           default: ""
         nameOverride:
           type: string
