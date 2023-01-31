@@ -59,8 +59,9 @@ jobs:
       - name: Push imgpkg bundle
         working-directory: ./helm
         env:
-          IMGPKG_ACTIVE_KEYCHAINS: github
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IMGPKG_REGISTRY_HOSTNAME: ghcr.io
+          IMGPKG_REGISTRY_USERNAME: ${{ github.actor }}
+          IMGPKG_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: |
           imgpkg push -b ghcr.io/alemorcuq/sealed-secrets-carvel:${{ env.carvel_version }} -f .
 
