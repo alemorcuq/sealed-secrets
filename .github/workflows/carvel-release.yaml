@@ -44,7 +44,6 @@ jobs:
           export PATH=~/bin:$PATH
           echo "carvel_version=$(yq .spec.version < ./carvel/package.yaml)" >> $GITHUB_ENV
 
-
       - name: Create imglock file
         working-directory: ./helm
         run: |
@@ -65,3 +64,14 @@ jobs:
         run: |
           imgpkg push -b ghcr.io/alemorcuq/sealed-secrets-carvel:${{ env.carvel_version }} -f .
 
+      - name: Update package.yaml
+        run: |
+          yq -i '.spec.version = "${{ env.carvel_version }}"' carvel/package.yaml
+          yq -i '.metadata.name = "sealedsecrets.bitnami.com.${{ env.carvel_version }}"' carvel/package.yaml
+          yq -i '.spec.template.spec.fetch.0.imgpkgBundle.image = "ghcr.io/alemorcuq/sealed-secrets-carvel:${{ env.carvel_version }}"' carvel/package.yaml
+
+      - name: Commit package.yaml
+        run: |
+          git add ./carvel/package.yaml
+          git commit -s -m 'Update package to version ${{ env.carvel_version }}'
+          git push
