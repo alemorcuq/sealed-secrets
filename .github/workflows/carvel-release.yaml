@@ -33,7 +33,19 @@ jobs:
           only: kbld, imgpkg
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create imglock.yaml
+      - name: Install yq
+        run: |
+          mkdir -p ~/bin
+          wget https://github.com/mikefarah/yq/releases/v4.30.8/download/yq_linux_amd64 -O ~/bin/yq
+          chmod +x ~/bin/yq
+
+      - name: Get Carvel bundle version
+        run: |
+          export PATH=~/bin:$PATH
+          echo "carvel_version=$(yq .spec.version < ./carvel/package.yaml)" >> $GITHUB_ENV
+
+
+      - name: Create imglock file
         working-directory: ./helm
         run: |
           mkdir -p .imgpkg
@@ -42,4 +54,13 @@ jobs:
           ls -la .imgpkg
           cat .imgpkg/images.yml
           git status
+          echo "${{ env.carvel_version }}"
+
+      - name: Push imgpkg bundle
+        working-directory: ./helm
+        env:
+          IMGPKG_ACTIVE_KEYCHAINS: github
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          imgpkg push -b ghcr.io/alemorcuq/sealed-secrets-carvel:2.7.3 -f .
 
