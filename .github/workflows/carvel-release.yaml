@@ -1,0 +1,45 @@
+name: Release Carvel package
+
+on:
+  push:
+    paths:
+      # update this file to trigger Carvel package release
+      - 'carvel/package.yaml'
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3.4
+        with:
+          version: v3.4.2
+
+      - name: Install Carvel
+        uses: carvel-dev/setup-action@v1.3.0
+        with:
+          only: kbld, imgpkg
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create imglock.yaml
+        working-directory: ./helm
+        run: |
+          mkdir -p .imgpkg
+          kbld -f <(helm template sealed-secrets) --imgpkg-lock-output .imgpkg/images.yml
+          ls -la
+          ls -la .imgpkg
+          cat .imgpkg/images.yml
+          git status
+
