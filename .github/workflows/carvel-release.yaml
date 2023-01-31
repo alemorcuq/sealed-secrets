@@ -62,5 +62,5 @@ jobs:
           IMGPKG_ACTIVE_KEYCHAINS: github
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          imgpkg push -b ghcr.io/alemorcuq/sealed-secrets-carvel:2.7.3 -f .
+          imgpkg push -b ghcr.io/alemorcuq/sealed-secrets-carvel:${{ env.carvel_version }} -f .
 
