@@ -1,0 +1,54 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      kubeseal_dockerhub_image_name: docker.io/bitnami/sealed-secrets-kubeseal
+      kubeseal_ghcr_image_name: ghcr.io/bitnami-labs/sealed-secrets-kubeseal
+    steps:
+      # Checkout and set env
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: 0
+
+      # Setup env tools to copy images
+      - name: Set up regctl
+        uses: iarekylew00t/regctl-installer@v1
+        with:
+          regctl-release: v0.4.7
+
+      # Setup Cosign
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.4.0
+        with:
+          cosign-release: v2.2.3
+
+      - name: Write Cosign key
+        run: echo "$COSIGN_KEY" > /tmp/cosign.key
+        env:
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
+
+      # Build & Publish multi-arch image
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Login to GHRC
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Sign kubeseal image with a key in GHCR
+        run: |
+          echo -n "$COSIGN_PASSWORD" | cosign sign --key /tmp/cosign.key --yes $TAG_CURRENT
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          TAG_CURRENT: 0.26.2
+          COSIGN_REPOSITORY: ${{ env.kubeseal_ghcr_image_name }}/signs
