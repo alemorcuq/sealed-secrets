@@ -37,8 +37,9 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Fetch Versions
-        run: echo NEW_VERSION=$(git describe --tags --match "v[0-9]*" --abbrev=0 | tr -d v) >> "$GITHUB_ENV"
-        run: echo PREV_VERSION=$(grep appVersion helm/sealed-secrets/Chart.yaml | grep -o '[0-9.]*') >> "$GITHUB_ENV"
+        run: |
+          echo NEW_VERSION=$(git describe --tags --match "v[0-9]*" --abbrev=0 | tr -d v) >> "$GITHUB_ENV"
+          echo PREV_VERSION=$(grep appVersion helm/sealed-secrets/Chart.yaml | grep -o '[0-9.]*') >> "$GITHUB_ENV"
 
       - name: Update Version
         run: |
