@@ -423,15 +423,14 @@ spec:
   template:
     spec:
       fetch:
-      - imgpkgBundle:
-          image: ghcr.io/bitnami-labs/sealed-secrets-carvel:sha256-3607b5549fd1cae643d509d3ac90a7012be23a3b4699d718eb44f534b046aec1.imgpkg
+        - imgpkgBundle:
+            image: ghcr.io/alemorcuq/sealed-secrets-carvel@sha256:e4441f6865ea33f9316ec830fbf0a90941ece2402bf7e867e45379a7712ec6ab
       template:
-      - helmTemplate:
-          path: sealed-secrets
-      - kbld:
-          paths:
-          - "-"
-          - .imgpkg/images.yml
+        - helmTemplate:
+            path: sealed-secrets
+        - kbld:
+            paths:
+              - "-"
+              - .imgpkg/images.yml
       deploy:
-      - kapp: {}
-
+        - kapp: {}
