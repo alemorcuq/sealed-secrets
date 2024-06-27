@@ -46,9 +46,9 @@ jobs:
           sed -i "s/version: .*/version: ${{ inputs.chart }}/" helm/sealed-secrets/Chart.yaml
           sed -i "s/appVersion: .*/appVersion: $NEW_VERSION/" helm/sealed-secrets/Chart.yaml
           sed -i "s/tag: .*/tag: $NEW_VERSION/" helm/sealed-secrets/values.yaml
-          sed -i "s/$PREV_VERSION/$NEW_VERSION/" helm/sealed-secrets/README.md
+          sed -i "s/`$PREV_VERSION`/`$NEW_VERSION`/" helm/sealed-secrets/README.md
           git checkout -B 'release-chart-${{ inputs.chart }}'
-          git add helm/sealed-secrets/Chart.yaml helm/sealed-secrets/values.yaml
+          git add helm/sealed-secrets/Chart.yaml helm/sealed-secrets/values.yaml helm/sealed-secrets/README.md
           git commit -m 'Release chart ${{ inputs.chart }}'
           git push origin 'release-chart-${{ inputs.chart }}'
 
